@@ -2,6 +2,7 @@ package com.dteknoloji.game.engines;
 
 import com.dteknoloji.game.CheckResult;
 import com.dteknoloji.game.GameEngine;
+import com.dteknoloji.game.Randomizer;
 
 public class DefaultGameEngine implements GameEngine {
     private int minValue = 1;
@@ -9,18 +10,10 @@ public class DefaultGameEngine implements GameEngine {
     private Integer randomNumber = null;
     private int trialIndex = 1;
     private int maxTrialCount = 10;
+    private final Randomizer randomizer;
 
-    public DefaultGameEngine() {
-    }
-
-    public DefaultGameEngine(int maxValue) {
-        this.maxValue = maxValue;
-    }
-
-    public DefaultGameEngine(int minValue, int maxValue, int maxTrialCount) {
-        this.minValue = minValue;
-        this.maxValue = maxValue;
-        this.maxTrialCount = maxTrialCount;
+    public DefaultGameEngine(Randomizer randomizer) {
+        this.randomizer = randomizer;
     }
 
     @Override
@@ -29,8 +22,18 @@ public class DefaultGameEngine implements GameEngine {
     }
 
     @Override
+    public void setMinValue(int minValue) {
+        this.minValue = minValue;
+    }
+
+    @Override
     public int getMaxValue() {
         return maxValue;
+    }
+
+    @Override
+    public void setMaxValue(int maxValue) {
+        this.maxValue = maxValue;
     }
 
     @Override
@@ -39,9 +42,20 @@ public class DefaultGameEngine implements GameEngine {
     }
 
     @Override
+    public void setTrialIndex(int trialIndex) {
+        this.trialIndex = trialIndex;
+    }
+
+    @Override
     public int getMaxTrialCount() {
         return maxTrialCount;
     }
+
+    @Override
+    public void setMaxTrialCount(int maxTrialCount) {
+        this.maxTrialCount = maxTrialCount;
+    }
+
 
     @Override
     public Integer getRandomNumber() {
@@ -65,7 +79,7 @@ public class DefaultGameEngine implements GameEngine {
     }
 
     private void generateValue() {
-        randomNumber = (int) Math.round(minValue + Math.random() * (maxValue - minValue));
+        randomNumber = randomizer.nextInteger(minValue, maxValue);
         trialIndex = 1;
     }
 }

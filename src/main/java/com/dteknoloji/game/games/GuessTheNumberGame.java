@@ -4,37 +4,40 @@ import com.dteknoloji.game.CheckResult;
 import com.dteknoloji.game.Game;
 import com.dteknoloji.game.GameEngine;
 
+import java.io.PrintStream;
 import java.util.Scanner;
 
 public class GuessTheNumberGame implements Game {
-    private GameEngine game;
-    private Scanner scanner;
+    private final GameEngine game;
+    private final Scanner scanner;
+    private final PrintStream output;
 
-    public GuessTheNumberGame(GameEngine game, Scanner scanner) {
+    public GuessTheNumberGame(GameEngine game, Scanner scanner, PrintStream output) {
         this.game = game;
         this.scanner = scanner;
+        this.output = output;
     }
 
     public void run() {
-        System.out.println("Sayı Bulma Oyunu");
+        output.println("Sayı Bulma Oyunu");
         game.reset();
         loop:
         while (true) {
-            System.out.print(game.getTrialIndex() + ". Şansınız: ");
+            output.print(game.getTrialIndex() + ". Şansınız: ");
             int result = scanner.nextInt();
             CheckResult checkResult = game.check(result);
             switch (checkResult) {
                 case Win:
-                    System.out.println("Cevabı bildiniz. Tebrikler");
+                    output.println("Cevabı bildiniz. Tebrikler");
                     break loop;
                 case Increase:
-                    System.out.println("Cevabınızı büyütmeniz lazım!");
+                    output.println("Cevabınızı büyütmeniz lazım!");
                     break;
                 case Decrease:
-                    System.out.println("Cevabınızı küçültmeniz lazım!");
+                    output.println("Cevabınızı küçültmeniz lazım!");
                     break;
                 case Lost:
-                    System.out.printf("Maalesef bilemediniz. Cevap : %d olacaktı.\n", game.getRandomNumber());
+                    output.printf("Maalesef bilemediniz. Cevap : %d olacaktı.\n", game.getRandomNumber());
                     break loop;
             }
         }
