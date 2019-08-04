@@ -1,33 +1,24 @@
 package com.dteknoloji.game;
 
-import java.util.Scanner;
+import com.dteknoloji.game.engines.DefaultGameEngine;
+import com.dteknoloji.game.games.GuessTheNumberGame;
 
-/**
- * Hello world!
- */
+import java.util.Scanner;
+import java.util.regex.Pattern;
+
 public class App {
     public static void main(String[] args) {
-        // write your code here
-        System.out.println("Sayı Bulma Oyunu");
-        int tutulanSayi = (int) Math.round(Math.random() * 1000);
-        boolean bildi = false;
         Scanner scanner = new Scanner(System.in);
-        for (int sans = 1; sans <= 10; sans++) {
-            System.out.print(sans + ". Şansınız: ");
-            int cevap = scanner.nextInt();
-            if (cevap == tutulanSayi) {
-                System.out.println("Cevabı bildiniz. Tebrikler");
-                bildi = true;
+        GameEngine gameEngine = new DefaultGameEngine(1, 1000, 10);
+        Game game = new GuessTheNumberGame(gameEngine, scanner);
+        while (true) {
+            game.run();
+            System.out.println("Tekrar oynamak ister misiniz?(E,H)");
+            String choice = scanner.next(Pattern.compile("[EeHh]"));
+            if (!choice.equals("E") && !choice.equals("e")) {
+                System.out.println("Tekrar görüşmek üzere");
                 break;
             }
-            if (cevap > tutulanSayi) {
-                System.out.println("Cevabınızı küçültmeniz lazım!");
-            } else if (cevap < tutulanSayi) {
-                System.out.println("Cevabınızı büyütmeniz lazım!");
-            }
-        }
-        if (!bildi) {
-            System.out.printf("Maalesef bilemediniz. Cevap : %d olacaktı.\n", tutulanSayi);
         }
     }
 }
